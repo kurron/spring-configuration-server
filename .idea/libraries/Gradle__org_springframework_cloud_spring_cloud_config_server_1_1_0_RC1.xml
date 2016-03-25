@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springframework.cloud:spring-cloud-config-server:1.1.0.RC1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-config-server/1.1.0.RC1/fc2a2c41b9e84dc89a0ee6686fe72b9cf032730f/spring-cloud-config-server-1.1.0.RC1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.cloud/spring-cloud-config-server/1.1.0.RC1/630b726b26bbb3f1749f8908a52f608ca8e02991/spring-cloud-config-server-1.1.0.RC1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

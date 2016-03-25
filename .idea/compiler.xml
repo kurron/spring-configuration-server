@@ -21,6 +21,8 @@
     <bytecodeTargetLevel>
       <module name="jvm-guy-bare-rest-api_main" target="1.8" />
       <module name="jvm-guy-bare-rest-api_test" target="1.8" />
+      <module name="jvm-guy-configuration-server_main" target="1.8" />
+      <module name="jvm-guy-configuration-server_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

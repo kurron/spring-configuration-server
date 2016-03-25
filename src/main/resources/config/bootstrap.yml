@@ -1,6 +1,0 @@
-spring:
-    application:
-        name: example
-    cloud:
-        config:
-            uri: ${SPRING_CONFIG_URI:https://raw.githubusercontent.com/kurron/lazybones-experiment/master/templates/jvm-guy-spring-boot-project/configuration}

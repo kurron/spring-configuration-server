@@ -15,9 +15,9 @@
  */
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.data:spring-data-rest-hal-browser')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
+//  compile('org.springframework.boot:spring-boot-starter-data-rest')
+//  compile('org.springframework.data:spring-data-rest-hal-browser')
+//  compile('org.springframework.boot:spring-boot-starter-hateoas')
 //  compile('org.springframework.boot:spring-boot-starter-jersey')
 //  compile('org.springframework.boot:spring-boot-starter-mobile')
 //  compile('io.ratpack:ratpack-spring-boot:1.1.1')
@@ -26,50 +26,11 @@ dependencies {
 //  compile('org.springframework.boot:spring-boot-starter-websocket')
 //  compile('org.springframework.boot:spring-boot-starter-ws')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+//  testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 
 dependencyManagement {
     imports {
         mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
     }
-}
-
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
-
-test {
-    outputs.dir snippetsDir
-}
-
-asciidoctor {
-    attributes 'snippets': snippetsDir
-    inputs.dir snippetsDir
-    dependsOn 'documentationTests'
-}
-
-jar {
-    dependsOn asciidoctor
-    from ("${asciidoctor.outputDir}/html5") {
-        into 'static/docs'
-    }
-}
-
-//TODO: only works if the Groovy plugin has previously been included.  Should probably check.
-task documentationTests( type: Test ) {
-    group 'Documentation'
-    description = 'Runs the tests that generate the examples for the API documentation.'
-    debug = false
-    useJUnit {
-        includeCategories 'org.kurron.categories.DocumentationTest'
-    }
-    testLogging {
-        showStandardStreams = false
-        exceptionFormat = 'full'
-    }
-    reports.html.destination =  "$buildDir/reports/documentationTests"
-    // if the profile system property is set, copy into forked child process
-    def springProfilesActive = System.properties['spring.profiles.active']
-    if ( springProfilesActive ) { systemProperties['spring.profiles.active'] = springProfilesActive }
 }
