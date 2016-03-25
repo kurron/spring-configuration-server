@@ -46,7 +46,7 @@
         <appender-ref ref="CONSOLE"/>
     </appender>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="ASYNC-CONSOLE"/>
     </root>
 </configuration>

@@ -1,43 +1,43 @@
 spring:
-  cloud:
-      config:
-          server:
-              git:
-                  uri: https://github.com/kurron/spring-configuration-files.git
-  main:
-    banner-mode: console
-  groovy:
-    template:
-      check-template-location: false
-  jackson:
-    serialization:
-      indent_output: true
-    serialization-inclusion: non_empty
+    cloud:
+        config:
+            server:
+                git:
+                    uri: https://github.com/kurron/spring-configuration-files.git
+    main:
+        banner-mode: console
+    groovy:
+        template:
+            check-template-location: false
+    jackson:
+        serialization:
+            indent_output: true
+        serialization-inclusion: non_empty
 
 management:
     context-path: /operations
 
 endpoints:
-  health:
-    sensitive: false
+    health:
+        sensitive: false
 
 server:
-  port: 2020
-  contextPath: /
+    port: 2020
+    contextPath: /
 
 logging:
-  config: classpath:logback.xml
+    config: classpath:logback.xml
 
 info:
-  app:
-    name: ${name}
-    description: ${description}
-    version: ${version}
+    app:
+        name: ${name}
+        description: ${description}
+        version: ${version}
 
 security:
-  user:
-    name: developer
-    password: developer
-  basic:
-    enabled: false
-    realm: example
+    user:
+        name: developer
+        password: developer
+    basic:
+        enabled: false
+        realm: example
