@@ -3,7 +3,7 @@ spring:
       config:
           server:
               git:
-                  uri: https://raw.githubusercontent.com/kurron/spring-configuration-server/master/configuration
+                  uri: https://github.com/kurron/spring-configuration-files.git
   main:
     banner-mode: console
   groovy:
