@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Configuration Server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.kurron.example.Application" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <module name="jvm-guy-configuration-server_main" />
+    <envs />
+    <method>
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="processResources" externalProjectPath="$PROJECT_DIR$/build.gradle" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
