@@ -1,0 +1,205 @@
+= Example API Guide
+The JVM Guy;
+:doctype: book
+:toc:
+:sectanchors:
+:sectlinks:
+:toclevels: 4
+:source-highlighter: highlightjs
+
+[[overview]]
+= Overview
+The Enchantment service is a simple microservice that transforms Magic Fairy Dust into pie charts.  The transformation is done
+in Enchantment but the results are stored in an expiring BLOB store, Lunar.
+
+[[overview-http-verbs]]
+== HTTP verbs
+
+Enchantment tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.  The supported verbs are idempotent so that retrying an operation in a partial
+failure scenario is expected and will not adversely affect the service.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Not currently supported
+
+| `PUT`
+| Used to create a new resource
+
+| `PATCH`
+| Not currently supported
+
+| `DELETE`
+| Not currently supported
+
+| `HEAD`
+| Not currently supported
+
+| `OPTIONS`
+| Not currently supported
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+Enchantment tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully.
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header.
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information.
+
+| `404 Not Found`
+| The requested resource did not exist. The response body will include an error providing further information.
+
+| `411 Length Required`
+| The request is missing the required Content-Length header. The response body will include an error providing further information.
+
+| `412 Precondition Failed`
+| The request is missing a required header. The response body will include an error providing further information.
+
+| `413 Request Entity Too Large`
+| The uploaded entity is too large for the service to handle. The response body will include an error providing further information.
+|===
+
+[[overview-required-http-headers]]
+== Required HTTP headers
+
+A small number of HTTP headers are required to be in all requests.
+
+|===
+| Header | Usage
+
+| `X-Correlation-Id`
+| Enchantment is part of a network of cooperating services and publishes its log messages to a centralized server.  To facilitate the tracing of events
+and messages between systems, Enchantment requires that a correlation id be provided with each request. If the client is the initiator of an action, then a
+new id should be generated.  If the client, however, is reacting to an outside event or message, the client should propagate the correlation id it was handed.
+|===
+
+[[overview-errors]]
+== Errors
+
+Whenever an error response (status code >= 400) is returned, a hypermedia control containing information that describes the problem will be returned.
+The control will populate the following fields in a failure scenario:
+
+|===
+| Field | Description
+
+| `status`
+| The HTTP status code being returned, e.g. 413.  Useful for clients that have difficulty accessing HTTP headers.
+
+| `code`
+| An integer code uniquely identifying the error message being returned. Helpful when troubleshooting failures.
+
+| `message`
+| A short message describing the problem using terms suitable for end users.
+
+| `developer-message`
+| A more detailed message describing the problem using terms suitable for developers and may contain possible solutions.
+|===
+
+For example, our forced failure resource will produce a `418 I'm a teapot` response:
+
+include::{snippets}/failure-scenario/curl-request.adoc[]
+include::{snippets}/failure-scenario/http-request.adoc[]
+include::{snippets}/failure-scenario/http-response.adoc[]
+
+[[overview-hypermedia]]
+== Hypermedia
+
+Enchantment uses a simple hypermedia control based on http://stateless.co/hal_specification.html[HAL] and includes links to other resources that the client
+can use to navigate around the service. Links can be found using the `_links` key.
+
+IMPORTANT:  Users of the API should not assemble or hard-code URIs themselves. Instead, they should use
+the above-described links to navigate from resource to resource.  Failure to observe this rule will undoubtedly
+result in errors as services and URIs change.
+
+[[overview-miscellaneous]]
+== Miscellaneous
+
+Enchantment does not currently require any form of authentication, expecting that the service will not be
+exposed directly to the public internet.  Enchantment does not currently rate limit requests, expecting that
+API users will be prudent in their use of the service.
+
+[[resources]]
+= Resources
+
+[[resources-index]]
+== Magic Fairy Dust
+
+The Magic Fairy Dust resource...
+
+[[api-discovery]]
+=== API discovery
+
+A `GET` request will return a collection of links to the currently supported resources.
+Interpreting those resources will allow the API user to navigate the API without having
+to hard code well-known URIs.
+
+IMPORTANT: The API and its URIs are likely to change over time so it is important the caller
+always begin a session with API discovery to obtain the currently supported URIs.
+
+==== Example Conversation
+
+TODO: add examples here
+
+[[mime-type]]
+=== Specifying Media Types
+The `Accept` and `Content-Type` headers contain the media types of entities being sent to and returned from the service.  Enchantment makes
+use of https://tools.ietf.org/html/rfc2045[RFC 2045] parameters to handle versioning of the formats as well as to
+indicate options that can be applied to the transformations.  An example of a media type containing version information
+might be `application/json;type=my-hypermedia-control;version=1.2.3`.
+
+[[transformation]]
+=== Transforming Fairy Dust
+
+A `PUT` request is used to upload the Fairy Dust and initiate the transformation process.  The process is idempotent and may be retried in the event
+of a partial failure.
+
+|===
+| Notable Header | Usage
+| `Accept`
+| This header is used to indicate the format of the response.  In the context of Enchantment, it is always the MIME type of the hypermedia control.
+| `Content-Length`
+| This header is used to indicate the size, in bytes, of the Fairy Dust being uploaded.
+| `Content-MD5`
+| This header is used to ensure the Fairy Dust being uploaded arrives uncorrupted.  Fill the header with the Base64 encoding of the MD5 digest of the Fairy Dust.
+| `Content-Type`
+| This header is used to indicate the exact format of the Fairy Dust being uploaded, including version.
+| `X-Expiration-Minutes`
+| The number of minutes that the system should hold onto the generated asset before purging it.
+| `X-Transform-To`
+| The MIME type of the desired conversion.
+| `X-Uploaded-By`
+| Identifies the application communicating with Enchantment and is used primarily for logging and reporting purposes.  The contents are never
+interpreted but be should unique within the enterprise.  Examples include 'my cool application', 'Enchantment'.
+|===
+
+==== Example Conversation
+
+TODO: add example snippets
+
+[[asset-download]]
+=== Downloading the asset
+
+The generated asset will be hosted by the Lunar service and not by Enchantment.  The `Location` header returned as part of the `PUT` request contains
+the URI to the asset and should be used to `GET` the asset.
+
+[[current-limitations]]
+=== Current Limitations
+
+Transformation to pie charts is the only supported format.  Additional transformations may be supported in the future, if the demand is strong enough.

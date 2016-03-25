@@ -1,0 +1,9 @@
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-cassandra')
+    compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
+    compile('org.springframework.boot:spring-boot-starter-data-gemfire')
+    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+    compile('org.springframework.boot:spring-boot-starter-data-solr')
+    compile('org.springframework.boot:spring-boot-starter-redis')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}

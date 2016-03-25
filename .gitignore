@@ -1,0 +1,4 @@
+build
+.gradle
+docker/artifacts
+.idea/workspace.xml

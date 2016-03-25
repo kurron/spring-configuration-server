@@ -1,0 +1,21 @@
+dependencies {
+    testCompile "info.cukes:cucumber-junit:${cucumberVersion}"
+    testCompile "info.cukes:cucumber-groovy:${cucumberVersion}"
+    testCompile "info.cukes:cucumber-spring:${cucumberVersion}"
+}
+
+//TODO: this only works if included AFTER the Groovy plugin.  Should probably check.
+task acceptanceTests( type: Test ) {
+    group 'Verification'
+    description = 'Runs the acceptance tests.'
+    // categories and cucumber tests don't play nicely -- no tests are detected and run
+    includes << '**/AcceptanceTests.class'
+    // cucumber dictates where to place the report -- note that this will still generate an empty report at build/reports/tests
+    testLogging {
+        showStandardStreams = false
+        exceptionFormat = 'full'
+    }
+    // if the profile system property is set, copy into forked child process
+    def springProfilesActive = System.properties['spring.profiles.active']
+    if ( springProfilesActive ) { systemProperties['spring.profiles.active'] = springProfilesActive }
+}

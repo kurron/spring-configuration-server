@@ -1,0 +1,63 @@
+# turn on the banner and disable groovy templating
+spring:
+  main:
+    banner-mode: console
+  groovy:
+    template:
+      check-template-location: false
+  jackson:
+    serialization:
+      indent_output: true
+    serialization-inclusion: non_empty
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtualHost: /
+    username: guest
+    password: guest
+
+management:
+    context-path: /operations
+
+# configure operations endpoints
+endpoints:
+  health:
+    sensitive: false
+
+server:
+  port: 8080
+  contextPath: /
+
+# which logback configuration file to use
+logging:
+  config: classpath:logback.xml
+
+# Override the default values of the info endpoint
+info:
+  app:
+    name: ${name}
+    description: ${description}
+    version: ${version}
+
+# Override the default security properties, defined in org.springframework.boot.autoconfigure.security.SecurityProperties
+security:
+  user:
+    name: developer
+    password: developer
+  basic:
+    enabled: false
+    realm: example
+
+# app specific properties
+example:
+  foo: default
+  exchangeName: some-exchange
+  queueName: some-queue
+
+#---------- profile specific overrides ----------#
+
+---
+spring:
+  profiles: bamboo
+example:
+  foo: bamboo
