@@ -1,3 +1,25 @@
+endpoints:
+    health:
+        sensitive: false
+logging:
+    config: classpath:logback.xml
+info:
+    app:
+        name: ${name}
+        description: ${description}
+        version: ${version}
+management:
+    context-path: /operations
+security:
+    user:
+        name: developer
+        password: developer
+    basic:
+        enabled: false
+        realm: example
+server:
+    port: 2020
+    contextPath: /
 spring:
     cloud:
         config:
@@ -13,31 +35,3 @@ spring:
         serialization:
             indent_output: true
         serialization-inclusion: non_empty
-
-management:
-    context-path: /operations
-
-endpoints:
-    health:
-        sensitive: false
-
-server:
-    port: 2020
-    contextPath: /
-
-logging:
-    config: classpath:logback.xml
-
-info:
-    app:
-        name: ${name}
-        description: ${description}
-        version: ${version}
-
-security:
-    user:
-        name: developer
-        password: developer
-    basic:
-        enabled: false
-        realm: example
