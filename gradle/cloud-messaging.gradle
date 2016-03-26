@@ -16,12 +16,12 @@
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-bus-amqp')
-    compile('org.springframework.cloud:spring-cloud-starter-bus-kafka')
-    compile('org.springframework.cloud:spring-cloud-starter-bus-redis')
-    compile('org.springframework.cloud:spring-cloud-starter-consul-bus')
-    compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
-    compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
-    compile('org.springframework.cloud:spring-cloud-starter-stream-redis')
+//  compile('org.springframework.cloud:spring-cloud-starter-bus-kafka')
+//  compile('org.springframework.cloud:spring-cloud-starter-bus-redis')
+//  compile('org.springframework.cloud:spring-cloud-starter-consul-bus')
+//  compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+//  compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+//  compile('org.springframework.cloud:spring-cloud-starter-stream-redis')
 }
 
 dependencyManagement {
