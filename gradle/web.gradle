@@ -17,7 +17,7 @@
 dependencies {
 //  compile('org.springframework.boot:spring-boot-starter-data-rest')
 //  compile('org.springframework.data:spring-data-rest-hal-browser')
-//  compile('org.springframework.boot:spring-boot-starter-hateoas')
+// compile('org.springframework.boot:spring-boot-starter-hateoas')
 //  compile('org.springframework.boot:spring-boot-starter-jersey')
 //  compile('org.springframework.boot:spring-boot-starter-mobile')
 //  compile('io.ratpack:ratpack-spring-boot:1.1.1')

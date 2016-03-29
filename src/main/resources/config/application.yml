@@ -9,7 +9,12 @@ info:
         description: ${description}
         version: ${version}
 management:
-    context-path: /operations
+    contextPath: /operations
+    security:
+        enabled: false
+        role: admin
+        sessions: stateless
+
 security:
     user:
         name: developer
@@ -20,12 +25,26 @@ security:
 server:
     port: 2020
     contextPath: /
+
 spring:
+    application:
+        name: CONFIGSERVER
     cloud:
         config:
+#            discovery:
+#                enabled: true
             server:
                 git:
                     uri: https://github.com/kurron/spring-configuration-files.git
+        consul:
+            host: localhost
+            port: 8500
+            discovery:
+                healthCheckInterval: 15s
+                healthCheckPath: /operations/health
+                instanceId: CONFIGSERVER:1
+                preferAgentAddress: true
+                preferIpAddress: true
     main:
         banner-mode: console
     groovy:
