@@ -46,11 +46,32 @@ spring:
             host: localhost
             port: 8500
             discovery:
+                aclToken:
+                catalogServicesWatchDelay: 10
+                catalogServicesWatchTimeout: 2
+                enabled: true
                 healthCheckInterval: 15s
                 healthCheckPath: /operations/health
+                healthCheckTimeout: 5s
+                healthCheckUrl:
+                hostname:
+                ipAddress:
                 instanceId: \${spring.application.name}:\${random.int[1024,65536]}
+                lifecycle:
+                    enabled: true
+                managementSuffix: management
+                managementTags:
+                    - management
+                port: \${server.port}
                 preferAgentAddress: true
                 preferIpAddress: true
+                register: true
+                registerHealthCheck: true
+                scheme: http
+                queryPassing: false
+                serviceName: \${spring.application.name}
+                serverListQueryTags:
+                    some-key: some-value
                 tags:
                     - configuration
                     - operations
