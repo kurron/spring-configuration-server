@@ -30,7 +30,7 @@ bintray {
             name = project.version
             desc = 'Spring Cloud based configuration server'
             released  = new Date()
-            vcsTag = 'master'
+            vcsTag = "${project.branch}"
             attributes = ['key': 'value']
         }
     }
