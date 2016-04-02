@@ -1,3 +1,5 @@
+# this files gets expanded by Gradle to contain the values at build time so you need to escape anything you don't want expanded
+
 endpoints:
     health:
         sensitive: false
@@ -25,27 +27,28 @@ security:
     basic:
         enabled: false
         realm: example
+
 server:
     port: 2020
     contextPath: /
 
 spring:
     application:
-        name: \${SERVICE_NAME:configuration-server}
+        name: ${name}
     cloud:
         bus:
             enabled: false
         config:
             server:
                 git:
-                    uri: \${GIT_URI:https://github.com/kurron/spring-configuration-files.git}
+                    uri: https://github.com/kurron/spring-configuration-files.git
         consul:
-            host: \${CONSUL_HOST:localhost}
-            port: \${CONSUL_PORT:8500}
+            host: localhost
+            port: 8500
             discovery:
                 healthCheckInterval: 15s
                 healthCheckPath: /operations/health
-                instanceId: \${SERVICE_NAME:configuration-server}:\${random.int[1024,65536]}
+                instanceId: \${spring.application.name}:\${random.int[1024,65536]}
                 preferAgentAddress: true
                 preferIpAddress: true
     main:
