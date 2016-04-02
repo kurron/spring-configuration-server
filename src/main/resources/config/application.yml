@@ -1,13 +1,10 @@
 endpoints:
     health:
         sensitive: false
+
 logging:
     config: classpath:logback.xml
-info:
-    app:
-        name: ${name}
-        description: ${description}
-        version: ${version}
+
 management:
     contextPath: /operations
     security:
@@ -28,21 +25,21 @@ server:
 
 spring:
     application:
-        name: CONFIGSERVER
+        name: ${SERVICE_NAME:configuration-server}
     cloud:
+        bus:
+            enabled: false
         config:
-#            discovery:
-#                enabled: true
             server:
                 git:
-                    uri: https://github.com/kurron/spring-configuration-files.git
+                    uri: ${GIT_URI:https://github.com/kurron/spring-configuration-files.git}
         consul:
-            host: localhost
-            port: 8500
+            host: ${CONSUL_HOST:localhost}
+            port: ${CONSUL_PORT:8500}
             discovery:
                 healthCheckInterval: 15s
                 healthCheckPath: /operations/health
-                instanceId: CONFIGSERVER:1
+                instanceId: ${SERVICE_NAME:configuration-server}:${random.int[1024,65536]}
                 preferAgentAddress: true
                 preferIpAddress: true
     main:
@@ -54,9 +51,3 @@ spring:
         serialization:
             indent_output: true
         serialization-inclusion: non_empty
-    rabbitmq:
-        host: localhost
-        password: guest
-        port: 5672
-        virtualHost: /
-        username: guest

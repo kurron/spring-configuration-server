@@ -1,0 +1,6 @@
+# we have to split this out into its own file otherwise we can't expand these values properly
+info:
+    app:
+        name: ${name}
+        description: ${description}
+        version: ${version}

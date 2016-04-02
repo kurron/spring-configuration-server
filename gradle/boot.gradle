@@ -18,7 +18,7 @@ apply plugin: 'spring-boot'
 
 // have Gradle expand properties when copying resource files
 processResources {
-    filesMatching( '**/application.yml' ) {
+    filesMatching( '**/src/main/resources/application.yml' ) {
         expand( project.properties )
     }
 }
