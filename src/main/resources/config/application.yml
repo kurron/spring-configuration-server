@@ -2,6 +2,12 @@ endpoints:
     health:
         sensitive: false
 
+info:
+    app:
+        name: ${name}
+        description: ${description}
+        version: ${version}
+
 logging:
     config: classpath:logback.xml
 
@@ -25,21 +31,21 @@ server:
 
 spring:
     application:
-        name: ${SERVICE_NAME:configuration-server}
+        name: \${SERVICE_NAME:configuration-server}
     cloud:
         bus:
             enabled: false
         config:
             server:
                 git:
-                    uri: ${GIT_URI:https://github.com/kurron/spring-configuration-files.git}
+                    uri: \${GIT_URI:https://github.com/kurron/spring-configuration-files.git}
         consul:
-            host: ${CONSUL_HOST:localhost}
-            port: ${CONSUL_PORT:8500}
+            host: \${CONSUL_HOST:localhost}
+            port: \${CONSUL_PORT:8500}
             discovery:
                 healthCheckInterval: 15s
                 healthCheckPath: /operations/health
-                instanceId: ${SERVICE_NAME:configuration-server}:${random.int[1024,65536]}
+                instanceId: \${SERVICE_NAME:configuration-server}:\${random.int[1024,65536]}
                 preferAgentAddress: true
                 preferIpAddress: true
     main:
