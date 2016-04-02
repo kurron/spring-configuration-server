@@ -23,6 +23,8 @@
     </option>
     <envs />
     <patterns />
-    <method />
+    <method>
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="processResources" externalProjectPath="$PROJECT_DIR$/build.gradle" vmOptions="" scriptParameters="" />
+    </method>
   </configuration>
 </component>
