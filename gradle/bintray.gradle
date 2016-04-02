@@ -20,7 +20,7 @@ bintray {
     publications = ['mavenPublish']
     pkg {
         repo = 'maven'
-        name = 'spring-configuration-server'
+        name = "${project.name}"
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/kurron/spring-configuration-server.git'
         labels = ['spring', 'spring-cloud', 'microservices']
