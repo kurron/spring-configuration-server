@@ -2,6 +2,7 @@
 
 endpoints:
     health:
+        time-to-live: 1000
         sensitive: false
 
 info:
@@ -29,8 +30,13 @@ security:
         realm: example
 
 server:
-    port: 2020
     contextPath: /
+    port: 2020
+    useForwardHeaders: true
+    tomcat:
+        portHeader: X-Forwarded-Port
+        protocolHeader: X-Forwarded-Protocol-Header
+        remoteIpHeader: X-Forwarded-Remote-IP-Header
 
 spring:
     application:
