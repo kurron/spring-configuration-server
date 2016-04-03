@@ -73,9 +73,7 @@ spring:
                 serverListQueryTags:
                     some-key: some-value
                 tags:
-                    - configuration
-                    - operations
-                    - infrastructure
+                    - ${version}
     main:
         banner-mode: console
     groovy:
