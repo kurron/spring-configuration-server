@@ -1,4 +1,4 @@
-# this files gets expanded by Gradle to contain the values at build time so you need to escape anything you don't want expanded
+# this file gets expanded by Gradle to contain the values at build time so you need to escape anything you don't want expanded
 
 endpoints:
     health:
