@@ -16,8 +16,10 @@
 
 buildscript {
     repositories {
-        jcenter()
-    }
+        maven {
+            url = artifactory
+        }
+    } 
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:${dependencyPluginVersion}"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
@@ -25,7 +27,7 @@ buildscript {
 }
 
 plugins {
-    id "com.jfrog.bintray" version "1.2"
+    id "com.jfrog.bintray" version "1.6"
 }
 
 description = 'An example of a Spring Configuration server'

@@ -15,21 +15,7 @@
  */
 
 repositories {
-    jcenter()
     maven {
-        url = releaseURL
+        url = artifactory
     }
-    maven {
-        name = 'kurron'
-        url = 'http://dl.bintray.com/kurron/maven'
-    }
-    maven {
-        name = 'Spring Milestone'
-        url = 'https://repo.spring.io/milestone'
-    }
-    maven {
-        name = 'Spring snapshots'
-        url = 'https://repo.spring.io/snapshot'
-    }
-
 }
