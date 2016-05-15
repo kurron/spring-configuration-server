@@ -18,8 +18,3 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-dataflow-server-local')
 }
 
-dependencyManagement {
-    imports { 
-        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentVersion}"
-    }
-}
