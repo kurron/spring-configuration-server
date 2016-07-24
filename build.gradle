@@ -32,6 +32,7 @@ plugins {
 
 description = 'An example of a Spring Configuration server'
 group = 'org.kurron'
+ext.builtOn = new Date()
 
 ext.coverageExcludes = []
 

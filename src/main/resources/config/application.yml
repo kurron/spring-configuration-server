@@ -10,6 +10,7 @@ info:
         name: ${name}
         description: ${description}
         version: ${version}
+        built-on: ${builtOn}
 
 logging:
     config: classpath:logback.xml
