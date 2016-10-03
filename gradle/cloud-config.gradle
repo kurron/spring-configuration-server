@@ -17,9 +17,10 @@
 dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile('org.springframework.cloud:spring-cloud-config-server')
-//  compile('org.springframework.cloud:spring-cloud-starter-consul-config')
 //  compile('org.springframework.cloud:spring-cloud-starter-zookeeper-config')
-    compile('org.springframework.cloud:spring-cloud-config-monitor')
-}
+//  compile('org.springframework.cloud:spring-cloud-starter-consul-config')
 
+// Not in https://start.spring.io/
+//  compile('org.springframework.cloud:spring-cloud-config-monitor')
+}
 

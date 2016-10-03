@@ -16,9 +16,16 @@
 
 apply plugin: 'spring-boot'
 
+configurations {
+    providedRuntime
+}
+
 // have Gradle expand properties when copying resource files
 processResources {
     filesMatching( '**/application.yml' ) {
+        expand( project.properties )
+    }
+    filesMatching( '**/bootstrap.yml' ) {
         expand( project.properties )
     }
 }

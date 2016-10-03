@@ -15,13 +15,16 @@
  */
 
 dependencies {
-//  compile('org.activiti:activiti-spring-boot-starter-basic:5.19.0')
-    compile('org.springframework.boot:spring-boot-starter-amqp')
-//  compile('org.springframework.boot:spring-boot-starter-artemis')
 //  compile('org.springframework.boot:spring-boot-starter-batch')
-//  compile('org.springframework.boot:spring-boot-starter-hornetq')
 //  compile('org.springframework.boot:spring-boot-starter-integration')
+//  compile('org.activiti:activiti-spring-boot-starter-basic:5.19.0')
+//  compile('org.springframework.boot:spring-boot-starter-activemq')
+//  compile('org.apache.camel:camel-spring-boot-starter:2.17.2')
+//  compile('org.springframework.boot:spring-boot-starter-artemis')
+    compile('org.springframework.boot:spring-boot-starter-amqp')
 //  compile('org.springframework.boot:spring-boot-starter-mail')
+
+// Not in https://start.spring.io/
+//  compile('org.springframework.boot:spring-boot-starter-hornetq')
 //  compile('io.ratpack:ratpack-spring-boot:1.1.1')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
 }

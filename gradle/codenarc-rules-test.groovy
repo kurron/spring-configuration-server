@@ -144,10 +144,11 @@ ruleset {
         ignoreStrings = '/'
     }
     
+    // Do not use these rules anymore.  They cause compilation errors during processing.
     // rulesets/enhanced.xml
-    CloneWithoutCloneable 
-    JUnitAssertEqualsConstantActualValue 
-    UnsafeImplementationAsMap 
+    //CloneWithoutCloneable 
+    //JUnitAssertEqualsConstantActualValue 
+    //UnsafeImplementationAsMap 
     
     // rulesets/exceptions.xml
     CatchArrayIndexOutOfBoundsException 
@@ -329,7 +330,9 @@ ruleset {
     PackageNameMatchesFilePath 
     ParameterName 
     PropertyName 
-    VariableName 
+    VariableName {
+        finalRegex = /[a-z][a-zA-Z0-9]*/
+    }
     
     // rulesets/security.xml
     FileCreateTempFile 
@@ -351,7 +354,7 @@ ruleset {
     // rulesets/size.xml
     AbcMetric   // Requires the GMetrics jar
     ClassSize 
-    CrapMetric   // Requires the GMetrics jar and a Cobertura coverage file
+//  CrapMetric
     CyclomaticComplexity   // Requires the GMetrics jar
     MethodCount 
     MethodSize 

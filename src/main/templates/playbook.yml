@@ -1,0 +1,51 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: Adding destination host to in-memory inventory
+    add_host: hostname=destination_host
+              ansible_ssh_host={{ server }}
+              ansible_ssh_user={{ user }}
+              ansible_ssh_pass={{ password }}
+              ansible_sudo_pass={{ password }}
+
+- hosts: destination_host
+  become: no
+
+  vars:
+    container_name: "${projectName}"
+    host_name: "${projectName}"
+    docker_account: "${dockerAccount}"
+    registry: "${dockerRegistry}"
+    repository: "${projectName}"
+    image: "{{registry}}/{{ docker_account }}/{{ repository }}:{{ tag }}"
+    host_port: 0
+    container_port: 8080
+    ports: "{{ host_port }}:{{ container_port }}"
+    heap_size: 128m
+    spring_profiles: default
+
+    # this is a bit strange but the container and host ports must match or the JVM broadcasts incorrect information to the JMX clients
+    jmx_port: 2020
+    jmx_ports: "{{ jmx_port }}:{{ jmx_port }}"
+    # this is the ip address of the host where the container is running
+    jmx_host: 10.0.2.15
+
+  tasks:
+    - name: Stopping the container
+      shell: "docker stop {{ container_name }} || true"
+
+    - name: Removing the container
+      shell: "docker rm --force=true {{ container_name }} || true"
+
+    - name: Running the container
+      command: "docker run --detach=true
+                           --restart=always
+                           --publish={{ ports }}
+                           --publish={{ jmx_ports }}
+                           --name={{ container_name }}
+                           --hostname={{ host_name }}
+                           --env=SPRING_PROFILES_ACTIVE={{ spring_profiles }}
+                           --env=JVM_HEAP_MAX={{ heap_size }}
+                           {{ image }}
+                           "

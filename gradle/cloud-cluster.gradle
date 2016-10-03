@@ -15,9 +15,8 @@
  */
 
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-cluster-hazelcast')
     compile('org.springframework.cloud:spring-cloud-cluster-redis')
-    compile('org.springframework.cloud:spring-cloud-cluster-zookeeper')
-    compile('org.springframework.cloud:spring-cloud-cluster-etcd')
+//  compile('org.springframework.cloud:spring-cloud-cluster-zookeeper')
+// compile('org.springframework.cloud:spring-cloud-cluster-hazelcast')
+//  compile('org.springframework.cloud:spring-cloud-cluster-etcd')
 }
-

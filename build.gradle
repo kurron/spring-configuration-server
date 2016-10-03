@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. Ronald D. Kurr kurr@jvmguy.com
+ * Copyright (c) 2016. Ronald D. Kurr kurr@jvmguy.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
+import java.util.concurrent.ThreadLocalRandom
+
 buildscript {
     repositories {
         maven {
             url = artifactory
         }
-    } 
+    }
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:${dependencyPluginVersion}"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
@@ -27,14 +29,24 @@ buildscript {
 }
 
 plugins {
-    id "com.jfrog.bintray" version "1.6"
+    id "org.asciidoctor.convert" version "1.5.3"
 }
 
-description = 'An example of a Spring Configuration server'
+plugins {
+    id "com.jfrog.bintray" version "1.7.1"
+}
+
+description = 'Spring Configuration Server backed by GitHub'
 group = 'org.kurron'
 ext.builtOn = new Date()
 
-ext.coverageExcludes = []
+// this the port that Docker will map to the internal insecure port
+ext.externalInsecurePort = ThreadLocalRandom.newInstance().nextInt( 65531 ) + 1
+
+// Show how to exclude objects from being required to have a unit-level test
+ext.coverageExcludes = [
+    'org/kurron/example/'
+]
 
 apply plugin: 'build-announcements'
 
@@ -52,27 +64,37 @@ apply from: "$rootDir/gradle/maven-publish.gradle"
 apply from: "$rootDir/gradle/spock.gradle"
 apply from: "$rootDir/gradle/dependency-exclusions.gradle"
 apply from: "$rootDir/gradle/conflicts.gradle"
+apply from: "$rootDir/gradle/cucumber.gradle"
+apply from: "$rootDir/gradle/docker.gradle"
 apply from: "$rootDir/gradle/bintray.gradle"
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:${springCloudStarterParentVersion}"
-    }
-}
+apply from: "$rootDir/gradle/codenarc.gradle"
+apply from: "$rootDir/gradle/jackson.gradle"
+apply from: "$rootDir/gradle/bintray.gradle"
 
 dependencies {
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}:indy"
-    testCompile "org.kurron:tools-groovy:${toolsGroovyVersion}"
+    compile "org.kurron:tools-groovy:${toolsGroovyVersion}"
+
     runtime "net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}"
 }
 
 defaultTasks << 'clean'
 defaultTasks << 'build'
 
+if ( 'true' == runIntegrationTests ) {
+    defaultTasks += ['outboundIntegrationTests', 'inboundIntegrationTests', 'acceptanceTests']
+    // make sure we deploy the docker container before running integration/acceptance tests
+    [acceptanceTests]*.dependsOn launchContainer
+    // make sure the docker image is cleaned up
+    [acceptanceTests]*.finalizedBy deleteDockerImage
+}
+
 // only publish artifacts if publishArtifacts is true, and the branch is either master or development
 if ( 'true' == publishArtifacts && branch in ['master', 'development'] ) {
-    defaultTasks << 'publishToMavenLocal'
     defaultTasks << 'bintrayUpload'
+    defaultTasks << 'publishDockerImage'
+    // ensures that deleteDockerImage will not be executed until we publish, unless a failure occurs prior to publishing
+    publishDockerImage.finalizedBy deleteDockerImage
 }
 else {
     defaultTasks << 'publishToMavenLocal'

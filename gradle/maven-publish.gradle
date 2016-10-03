@@ -29,6 +29,10 @@ publishing {
             artifact testSourcesJar
             artifact testBinariesJar
             artifact groovydocJar
+
+            // Docker stuff
+            artifact source: "$projectDir/build/docker/docker-compose.yml", classifier: 'docker-compose', extension: 'yml'
+            artifact source: "$projectDir/build/docker/playbook.yml", classifier: 'playbook', extension: 'yml'
         }
     }
 

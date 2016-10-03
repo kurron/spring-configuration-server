@@ -28,11 +28,11 @@ security:
         password: developer
     basic:
         enabled: false
-        realm: example
+        realm: configuration
 
 server:
     contextPath: /
-    port: 2020
+    port: 8080
     useForwardHeaders: true
     tomcat:
         portHeader: X-Forwarded-Port
@@ -50,7 +50,7 @@ spring:
                 git:
                     uri: https://github.com/kurron/spring-configuration-files.git
         consul:
-            host: localhost
+            host: consul
             port: 8500
             discovery:
                 aclToken:
@@ -61,6 +61,10 @@ spring:
                 healthCheckPath: /operations/health
                 healthCheckTimeout: 5s
                 healthCheckUrl:
+                heartbeat:
+                    # callback Consul periodically to stay registered
+                    enabled: true
+                    ttlValue: 10
                 hostname:
                 ipAddress:
                 instanceId: \${spring.application.name}:\${random.int[1024,65536]}
@@ -73,7 +77,8 @@ spring:
                 preferAgentAddress: true
                 preferIpAddress: true
                 register: true
-                registerHealthCheck: true
+                # coordinating ip addresses and ports in a Docker environment is very difficult, use the TTL mechanism instead
+                registerHealthCheck: false
                 scheme: http
                 queryPassing: false
                 serviceName: \${spring.application.name}

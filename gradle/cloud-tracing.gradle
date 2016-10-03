@@ -15,9 +15,10 @@
  */
 
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-sleuth-stream')
-    compile('org.springframework.cloud:spring-cloud-sleuth-zipkin-stream')
     compile('org.springframework.cloud:spring-cloud-starter-sleuth')
-    compile('org.springframework.cloud:spring-cloud-starter-zipkin')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+//  compile('org.springframework.cloud:spring-cloud-starter-zipkin')
+//  compile('org.springframework.cloud:spring-cloud-sleuth-stream')
+//  compile('org.springframework.cloud:spring-cloud-sleuth-zipkin-stream')
+//  compile('io.zipkin.java:zipkin-server')
+//  runtime('io.zipkin.java:zipkin-autoconfigure-ui')
 }

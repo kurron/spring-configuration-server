@@ -15,13 +15,15 @@
  */
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-freemarker')
-    compile('org.springframework.boot:spring-boot-starter-groovy-templates') {
-        exclude module: 'groovy'
-    }
-    compile('org.springframework.boot:spring-boot-starter-mustache')
+//  compile('org.springframework.boot:spring-boot-starter-freemarker')
+//  compile('org.springframework.boot:spring-boot-starter-groovy-templates') {
+//      exclude module: 'groovy'
+//  }
     compile('org.springframework.boot:spring-boot-starter-thymeleaf') {
         exclude module: 'groovy'
     }
-    compile('org.springframework.boot:spring-boot-starter-velocity')
+//  compile('org.springframework.boot:spring-boot-starter-mustache')
+
+//NOTE: no longer in https://start.spring.io/
+//  compile('org.springframework.boot:spring-boot-starter-velocity')
 }

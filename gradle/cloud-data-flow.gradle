@@ -16,5 +16,5 @@
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-dataflow-server-local')
+    compile('org.springframework.cloud:spring-cloud-dataflow-shell')
 }
-

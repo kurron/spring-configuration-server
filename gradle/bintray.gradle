@@ -28,7 +28,7 @@ bintray {
         attributes= ['a': ['ay1', 'ay2'], 'b': ['bee'], c: 'cee']
         version {
             name = project.version
-            desc = 'Spring Cloud based configuration server'
+            desc = project.description
             released  = new Date()
             vcsTag = "${project.branch}"
             attributes = ['key': 'value']

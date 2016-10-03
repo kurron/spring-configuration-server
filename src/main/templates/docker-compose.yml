@@ -1,0 +1,19 @@
+# Intended to build and run the container during the acceptance testing phase
+version: '2'
+services:
+    ${projectName}:
+        build: .
+        labels:
+            org.kurron.service: "${projectName}"
+            org.kurron.built-on: "${generated}"
+            org.kurron.branch: "${branch}"
+            org.kurron.version: "${version}"
+        ports:
+        - "${externalInsecurePort}:${insecurePort}"
+        environment:
+            JVM_HEAP_MAX: 128m
+            SPRING_CLOUD_CONSUL_HOST: "${consulAddress}"
+        cpu_shares: 0
+        cpu_quota: 0
+        mem_limit: 256m
+        memswap_limit: 256m
