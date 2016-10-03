@@ -1,0 +1,139 @@
+/*
+ * Copyright (c) 2016. Ronald D. Kurr kurr@jvmguy.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+def fullImageName = "${dockerRegistry}/${dockerAccount}/${project.name}:${version}"
+def containerName = project.name
+
+task copyDockerfile( type: Copy, dependsOn: bootRepackage ) {
+    from 'src/main/templates'
+    into "$dockerDirectory"
+    expand( projectName: project.name,
+            insecurePort: httpPort,
+            jmxPort: jmxPort,
+            generated: new Date(),
+            branch: branch,
+            version: version,
+            consulAddress: consulAddress,
+            localAddress: localAddress,
+            externalInsecurePort: externalInsecurePort,
+            dockerRegistry: dockerRegistry,
+            dockerAccount: dockerAccount)
+}
+
+// make sure we ALWAYS copy the templates over so that local publication works
+build.dependsOn copyDockerfile
+
+task copyBuildArtifact( type: Copy, dependsOn: [copyDockerfile] ) {
+    def buildArtifactName = "${project.name}-${version}.jar"
+    from( 'build/libs/' ) {
+        include buildArtifactName
+        rename buildArtifactName, "${project.name}.jar"
+    }
+    into "$dockerDirectory"
+}
+
+task buildDockerImage( type: Exec, dependsOn: copyBuildArtifact ) {
+    group 'Docker'
+    description = 'Builds a docker image'
+    workingDir dockerDirectory
+    doFirst {
+        logger.quiet "Building docker image $fullImageName based on the Dockerfile in $dockerDirectory/"
+        commandLine 'docker-compose', 'build', project.name
+    }
+}
+
+task tagDockerImage( type: Exec, dependsOn: buildDockerImage ) {
+    group 'Docker'
+    description = 'Tags the built docker image'
+    workingDir dockerDirectory
+    def untagged = "docker_${project.name}"
+    doFirst {
+        logger.quiet "Tagging $untagged to be $fullImageName/"
+        commandLine 'docker', 'tag', untagged, fullImageName
+    }
+}
+
+task publishDockerImage( type: Exec, dependsOn: tagDockerImage ) {
+    group 'Docker'
+    description = 'Publishes a previously built docker image to the private docker registry'
+    workingDir dockerDirectory
+    doFirst {
+        logger.quiet "Publishing docker image $fullImageName to $dockerRegistry"
+        commandLine 'docker', 'push', fullImageName
+    }
+}
+
+task deleteDockerImage( type: Exec ) {
+    group 'Docker'
+    description = 'Deletes Docker containers started by Docker Compose as well as images'
+    workingDir dockerDirectory
+    doFirst {
+        logger.quiet "Cleaning up Docker containers and networks."
+        commandLine 'docker-compose', 'down', '--rmi', 'all', '--remove-orphans'
+    }
+}
+
+task launchContainer( type: Exec, dependsOn: buildDockerImage ) {
+    group 'Docker'
+    description = 'Launches the container for testing'
+
+    workingDir dockerDirectory
+    doFirst {
+        logger.quiet "Running Docker Compose to start the container for testing"
+        commandLine 'docker-compose', 'up', '-d'
+        // in case the build box has to pull down images, we wait
+        Thread.sleep( 1000 * 30 )
+    }
+    doLast {
+        // find the id of the container
+        def ps = "docker ps --filter label=org.kurron.service=${project.name} --quiet"
+        logger.quiet "Executing ${ps}"
+        def psProcess = ps.execute()
+        def containerId = psProcess.text
+        logger.quiet "Command result is ${containerId}"
+
+        // ask for the HTTP port only
+        def command = "docker port ${containerId} 8080/tcp"
+        logger.quiet "Executing ${command}"
+        def process = command.execute()
+        def commandResult = process.text
+        logger.quiet "Command result is ${commandResult}"
+        def port = commandResult.split( ':' ).last() as int
+        logger.quiet "The container was deployed to port $port! Adding to system properties..."
+        System.setProperty( 'integration.test.port', port.toString() )
+        waitForServerToStart( port )
+    }
+}
+
+private void waitForServerToStart( int port ) {
+    def urlToPoll = "http://localhost:$port/operations/health".toURL()
+    def serverUp = false
+    def remainingAttempts = 40
+    def secondsBetweenAttempts = 2
+    while( !serverUp && remainingAttempts ) {
+        logger.quiet "Waiting ${secondsBetweenAttempts} seconds before polling the server via $urlToPoll"
+        remainingAttempts--
+        sleep secondsBetweenAttempts * 1000
+        try {
+            def result = urlToPoll.text
+            serverUp = true
+            logger.quiet "The server is up! Response: $result"
+        }
+        catch( IOException e ) {
+            logger.warn "The server is still not up. $remainingAttempts attempts remaining. Response details: ${e.message}"
+        }
+    }
+    if ( !serverUp ) { throw new IllegalStateException( 'The server took too long to start' ) }
+}
