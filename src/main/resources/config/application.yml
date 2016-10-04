@@ -58,13 +58,12 @@ spring:
                 catalogServicesWatchTimeout: 2
                 enabled: true
                 healthCheckInterval: 15s
-                healthCheckPath: /operations/health
+                healthCheckPath: \${management.contextPath}/health
                 healthCheckTimeout: 5s
                 healthCheckUrl:
                 heartbeat:
-                    # callback Consul periodically to stay registered
-                    enabled: true
-                    ttlValue: 10
+                    enabled: false
+                    ttlValue: 30
                 hostname:
                 ipAddress:
                 instanceId: \${spring.application.name}:\${random.int[1024,65536]}
@@ -77,8 +76,7 @@ spring:
                 preferAgentAddress: true
                 preferIpAddress: true
                 register: true
-                # coordinating ip addresses and ports in a Docker environment is very difficult, use the TTL mechanism instead
-                registerHealthCheck: false
+                registerHealthCheck: true
                 scheme: http
                 queryPassing: false
                 serviceName: \${spring.application.name}
