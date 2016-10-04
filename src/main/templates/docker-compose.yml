@@ -13,6 +13,8 @@ services:
         environment:
             JVM_HEAP_MAX: 128m
             SPRING_CLOUD_CONSUL_HOST: "${consulAddress}"
+            SPRING_CLOUD_CONSUL_DISCOVERY_IPADDRESS: "${localAddress}"
+            SPRING_CLOUD_CONSUL_DISCOVERY_PORT: "${externalInsecurePort}"
         cpu_shares: 0
         cpu_quota: 0
         mem_limit: 256m
