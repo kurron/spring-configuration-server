@@ -81,6 +81,7 @@ task deleteDockerImage( type: Exec ) {
     workingDir dockerDirectory
     doFirst {
         logger.quiet "Cleaning up Docker containers and networks."
+        commandLine 'docker-compose', 'stop'
         commandLine 'docker-compose', 'down', '--rmi', 'all', '--remove-orphans'
     }
 }
