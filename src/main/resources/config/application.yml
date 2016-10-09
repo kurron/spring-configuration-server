@@ -1,10 +1,4 @@
 # this file gets expanded by Gradle to contain the values at build time so you need to escape anything you don't want expanded
-
-endpoints:
-    health:
-        time-to-live: 1000
-        sensitive: false
-
 info:
     app:
         name: ${name}
@@ -22,10 +16,15 @@ management:
         role: admin
         sessions: stateless
 
+endpoints:
+    health:
+        time-to-live: 1000
+        sensitive: false
+
 security:
     user:
-        name: developer
-        password: developer
+        name: operations
+        password: operations
     basic:
         enabled: false
         realm: configuration
@@ -49,6 +48,10 @@ spring:
             server:
                 git:
                     uri: https://github.com/kurron/spring-configuration-files.git
+                health:
+                    # there is a bug/feature where the hitting the health endpoint causes the server to refresh with Git
+                    # https://github.com/spring-cloud/spring-cloud-config/issues/423
+                    enabled: false
         consul:
             host: consul
             port: 8500
