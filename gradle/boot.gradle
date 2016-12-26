@@ -16,6 +16,10 @@
 
 apply plugin: 'org.springframework.boot'
 
+springBoot {
+    executable = true
+}
+
 configurations {
     providedRuntime
 }
