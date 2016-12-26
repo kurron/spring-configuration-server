@@ -17,7 +17,6 @@
 dependencies {
     compile( 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml' ) // allow Jackson to serialize XML
     compile( 'org.codehaus.woodstox:woodstox-core-asl' ) // faster XML parser
-    compile( 'com.fasterxml.jackson.datatype:jackson-datatype-jdk7' ) // Java 7 types like java.nio.file.Path 
     compile( 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310' ) // Java 8 Date & Time API data types 
     compile( 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8' ) // other Java 8 types like Optional 
 }

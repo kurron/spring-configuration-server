@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 configurations {
     providedRuntime
