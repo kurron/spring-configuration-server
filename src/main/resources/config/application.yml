@@ -95,4 +95,4 @@ spring:
     jackson:
         serialization:
             indent_output: true
-        serialization-inclusion: non_empty
+        sdefault-property-inclusion: non_empty
